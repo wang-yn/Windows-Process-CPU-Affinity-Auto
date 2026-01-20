@@ -2,8 +2,34 @@
 
 ## Prerequisites
 
-- Windows 10/11 (Administrator privileges required)
+- Windows 10/11 (**Administrator privileges required**)
 - Rust toolchain installed (if building from source)
+
+## Important: Administrator Privileges
+
+**This service MUST be run as Administrator** to modify process CPU affinity.
+
+If you try to run without Administrator privileges, you will see:
+
+```
+╔════════════════════════════════════════════════════════════════╗
+║                    Administrator Privileges Required           ║
+╚════════════════════════════════════════════════════════════════╝
+
+This service requires Administrator privileges to set process
+CPU affinity. Please run this program as Administrator.
+
+To run as Administrator:
+  1. Right-click on Command Prompt or PowerShell
+  2. Select 'Run as administrator'
+  3. Navigate to the program directory
+  4. Run the program again
+
+Or use this command:
+  powershell -Command "Start-Process cmd -Verb RunAs"
+```
+
+The program will automatically check for administrator privileges on startup and exit with a clear error message if not running as Administrator.
 
 ## Building
 

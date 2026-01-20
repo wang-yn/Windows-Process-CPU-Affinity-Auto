@@ -11,6 +11,10 @@ A Windows background service that automatically monitors new processes and binds
 - **Automatic Affinity Setting**: Binds whitelisted processes to P-cores
 - **Flexible Configuration**: Easy TOML-based configuration
 - **Low Overhead**: Minimal CPU and memory usage
+- **Administrator Check**: Automatically verifies administrator privileges on startup
+- **Windows Service Mode**: Run as background service with automatic startup
+- **File Logging**: Comprehensive logging with file output for service mode
+- **Configuration Hot-Reload**: Detect configuration changes (foundation implemented)
 
 ## Architecture
 
@@ -78,15 +82,51 @@ processes = [
 
 ### Running
 
+The service supports two modes:
+
+#### CLI Mode (Testing/Development)
+
+**Important: Must run as Administrator!**
+
+The service will automatically check for administrator privileges on startup. If not running as Administrator, it will display a helpful error message and exit.
+
 ```bash
 # Run in command-line mode (for testing)
+# Right-click Command Prompt → "Run as administrator"
 .\target\release\process_cpu_auto.exe
 
 # Or specify a custom config path
 .\target\release\process_cpu_auto.exe path\to\config.toml
 ```
 
-**Note**: Must run as Administrator to set process affinity.
+#### Service Mode (Production)
+
+Install and run as a Windows Service for production use:
+
+```powershell
+# Install service (run as Administrator)
+.\install_service.ps1
+
+# Manage service
+Start-Service ProcessCpuAutoService
+Stop-Service ProcessCpuAutoService
+Get-Service ProcessCpuAutoService
+
+# View logs
+Get-Content "C:\ProgramData\ProcessCpuAuto\service.log" -Tail 50
+
+# Uninstall service
+.\uninstall_service.ps1
+```
+
+**Service Benefits:**
+- Automatic startup with Windows
+- Runs in background (no console window)
+- Automatic recovery on failure
+- File-based logging
+- Managed by Windows Service Manager
+
+For detailed service mode instructions, see [`SERVICE_MODE.md`](SERVICE_MODE.md).
 
 ## Configuration Guide
 
@@ -190,7 +230,7 @@ cargo run -- config.toml
 
 ## Project Status
 
-**Current Phase**: MVP (Minimum Viable Product)
+**Current Phase**: Alpha - Windows Service Integration Complete
 
 Implemented:
 - ✅ Configuration management (TOML)
@@ -200,13 +240,17 @@ Implemented:
 - ✅ Process cache management
 - ✅ Multiple match modes (exact, wildcard, regex)
 - ✅ Command-line interface
+- ✅ Administrator privilege check
+- ✅ **Windows Service mode**
+- ✅ **File logging with rotation**
+- ✅ **Configuration watcher (foundation)**
+- ✅ **Service install/uninstall scripts**
 
-Planned (Future):
-- ⏳ Windows Service integration
-- ⏳ Configuration hot-reload
-- ⏳ File logging with rotation
+Planned (Beta Phase):
+- ⏳ Active configuration hot-reload
 - ⏳ Windows Event Log integration
 - ⏳ Performance metrics
+- ⏳ GUI management interface (optional)
 
 ## License
 

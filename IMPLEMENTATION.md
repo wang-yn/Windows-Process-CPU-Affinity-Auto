@@ -10,7 +10,7 @@ The Windows Process CPU Affinity Auto Service has been successfully implemented 
 ```
 process_cpu_auto/
 ├── src/
-│   ├── main.rs              # Command-line entry point
+│   ├── main.rs              # Command-line entry point with privilege check
 │   ├── lib.rs               # Library interface with ServiceRunner
 │   ├── cpu/                 # CPU detection and affinity
 │   │   ├── mod.rs
@@ -29,10 +29,13 @@ process_cpu_auto/
 │   └── utils/               # Utilities
 │       ├── mod.rs
 │       ├── error.rs         # ServiceError with thiserror
-│       └── logger.rs        # env_logger initialization
+│       ├── logger.rs        # env_logger initialization
+│       └── privilege.rs     # Administrator privilege check (NEW)
 ├── Cargo.toml               # Dependencies configured
 ├── config.toml              # Example configuration
 ├── README.md                # Comprehensive documentation
+├── QUICKSTART.md            # Quick start guide with privilege info
+├── PRIVILEGE_CHECK.md       # Privilege check testing guide (NEW)
 └── .gitignore               # Git ignore rules
 ```
 
@@ -77,8 +80,15 @@ process_cpu_auto/
 - ✅ Config validation
 - ✅ Comprehensive example configuration
 
+#### Privilege Management (utils/privilege.rs)
+- ✅ Administrator privilege detection using Windows API
+- ✅ Early privilege check on startup
+- ✅ Clear, formatted error messages
+- ✅ Helpful instructions for users
+- ✅ Integration with error handling system
+
 ### 3. Testing ✅
-- ✅ 15 unit tests implemented and passing
+- ✅ 16 unit tests implemented and passing
 - ✅ Test coverage for:
   - Core mask calculation
   - CPU detection modes
@@ -86,6 +96,7 @@ process_cpu_auto/
   - Whitelist matching (exact, wildcard, regex)
   - Exclude list functionality
   - Configuration loading
+  - Administrator privilege check
 
 ### 4. Documentation ✅
 - ✅ Comprehensive README.md with:
@@ -98,14 +109,16 @@ process_cpu_auto/
   - Troubleshooting section
 - ✅ Inline code comments
 - ✅ Example configuration with detailed comments
+- ✅ Administrator privilege check and clear error messaging
 
 ## Build Status
 
 ```
 ✅ Debug build: Successful
 ✅ Release build: Successful (target/release/process_cpu_auto.exe)
-✅ Tests: 15/15 passing
+✅ Tests: 16/16 passing
 ✅ Warnings: 0
+✅ Administrator privilege check: Implemented
 ```
 
 ## Configuration Example
@@ -172,6 +185,10 @@ The service will:
 - Process cache management
 - Configuration loading
 - Error handling and logging
+- **Administrator privilege verification (NEW)**
+  - Automatic check on startup
+  - Clear error messages with instructions
+  - Early failure before initialization
 
 ### ⚠️ Limitations (By Design for MVP)
 - Runs in command-line mode (not as Windows Service yet)

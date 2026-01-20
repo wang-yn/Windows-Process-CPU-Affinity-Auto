@@ -18,6 +18,8 @@ pub struct ServiceConfig {
     pub scan_interval_ms: u64,
     #[serde(default = "default_log_level")]
     pub log_level: String,
+    #[serde(default = "default_log_file")]
+    pub log_file: String,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -78,6 +80,10 @@ fn default_log_level() -> String {
     "info".to_string()
 }
 
+fn default_log_file() -> String {
+    "C:\\ProgramData\\ProcessCpuAuto\\service.log".to_string()
+}
+
 fn default_detection_mode() -> String {
     "auto".to_string()
 }
@@ -103,6 +109,7 @@ impl Default for ServiceConfig {
         Self {
             scan_interval_ms: default_scan_interval(),
             log_level: default_log_level(),
+            log_file: default_log_file(),
         }
     }
 }

@@ -7,6 +7,10 @@ scan_interval_ms = 1000
 # Log level: trace, debug, info, warn, error
 log_level = "info"
 
+# Log file path (for service mode)
+# Default: C:\ProgramData\ProcessCpuAuto\service.log
+log_file = "C:\\ProgramData\\ProcessCpuAuto\\service.log"
+
 [cpu]
 # CPU detection mode: auto, manual, all_cores
 # - auto: Automatically detect P-cores and E-cores using Windows API
