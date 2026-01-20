@@ -1,0 +1,60 @@
+# Windows Process CPU Affinity Auto Service Configuration
+
+[service]
+# Process scanning interval in milliseconds
+scan_interval_ms = 1000
+
+# Log level: trace, debug, info, warn, error
+log_level = "info"
+
+[cpu]
+# CPU detection mode: auto, manual, all_cores
+# - auto: Automatically detect P-cores and E-cores using Windows API
+# - manual: Use manually specified core lists below
+# - all_cores: Use all available CPU cores (no P/E distinction)
+detection_mode = "auto"
+
+# Manual mode: Specify P-cores (Performance cores)
+# Example for a 12-core CPU (8 P-cores + 4 E-cores):
+p_cores = [0, 1, 2, 3, 4, 5, 6, 7]
+
+# Manual mode: Specify E-cores (Efficient cores)
+e_cores = [8, 9, 10, 11]
+
+[whitelist]
+# Match mode: exact, wildcard, regex
+# - exact: Exact process name matching (case-insensitive)
+# - wildcard: Support * and ? wildcards
+# - regex: Regular expression matching
+match_mode = "wildcard"
+
+# List of processes to bind to P-cores
+processes = [
+    "chrome.exe",
+    "msedge.exe",
+    "firefox.exe",
+    "code.exe",
+    "devenv.exe",
+    "rider64.exe",
+    "idea64.exe",
+    "*.game.exe",
+]
+
+# Processes to exclude (even if they match whitelist)
+exclude_processes = [
+    "system",
+    "svchost.exe",
+]
+
+[advanced]
+# Process existing processes on startup (false = only new processes)
+process_existing_on_startup = false
+
+# Cache cleanup interval in seconds
+cache_cleanup_interval_secs = 300
+
+# Number of retry attempts for setting affinity
+retry_attempts = 3
+
+# Delay between retries in milliseconds
+retry_delay_ms = 100
